@@ -1,0 +1,79 @@
+﻿@model ReporteTransaccionesDetallada
+
+@{
+    var resumenMontos = new ResumenMontosViewModel
+    {
+        Ingresos = Model.BalanceDepositos,
+        Gastos = Model.BalanceRetiros,
+        Total = Model.BalanceTotal
+	};
+}
+
+<div class="container mt-4">
+
+    <partial name="_NavegarPorMeses" model="@Model.FechaInicio" />
+
+	<partial name="_ResumenMontos" model="@resumenMontos" />
+
+@if (!Model.transaccionesAgrupadas.Any())
+{
+    <div class="alert alert-info text-center">
+        No hay transacciones para mostrar.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th style="width: 40px;"></th>
+                    <th>Categoría</th>
+                    <th>Cuenta</th>
+                    <th class="text-success">Depósito</th>
+                    <th class="text-danger">Retiro</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var grupo in Model.transaccionesAgrupadas)
+                {
+                    <tr class="table-primary">
+                        <td colspan="5" class="fw-bold fs-5">
+                            @grupo.FechaTransaccion.ToString("dd MMM yyyy", new System.Globalization.CultureInfo("es-ES"))
+                            <span class="badge bg-secondary ms-2">
+                                @grupo.FechaTransaccion.ToString("ddd", new System.Globalization.CultureInfo("es-ES"))
+                            </span>
+                            <span class="float-end">
+                                <span class="text-success">@grupo.BalanceDepoditos.ToString("N")</span> /
+                                <span class="text-danger">@grupo.BalanceRetiros.ToString("N")</span>
+                            </span>
+                        </td>
+                    </tr>
+
+                    @foreach (var transaccion in grupo.transaccions)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller="Transacciones"
+                                   asp-action="Editar"
+                                   asp-route-id="@transaccion.Id" asp-route-urlRetorno="@ViewBag.urlRetorno"
+                                   class="text-decoration-none text-dark">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            </td>
+                            <td>@transaccion.Categoria</td>
+                            <td>@transaccion.Cuenta</td>
+                            <td class="text-success text-end">
+                                @(transaccion.tipoOperacionId == TipoOperacion.ingreso ? transaccion.Monto.ToString("N") : "")
+                            </td>
+                            <td class="text-danger text-end">
+                                @(transaccion.tipoOperacionId == TipoOperacion.gasto ? transaccion.Monto.ToString("N") : "")
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+</div>

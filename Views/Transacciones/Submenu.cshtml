@@ -1,0 +1,41 @@
+﻿@model SubMenuTransacciones
+@{
+    int mes = ViewBag.Mes ?? DateTime.Today.Month;
+    int ano = ViewBag.Ano ?? DateTime.Today.Year;
+}
+<ul class="nav nav-pills nav-fill mb-3">
+    <li class="nav-item">
+        <a class="nav-link @(Model == SubMenuTransacciones.Diario ? "active" : null)"
+           asp-action="Index"
+           asp-route-mes="@mes"
+           asp-route-año="@ano">Diario</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link @(Model == SubMenuTransacciones.Semanal ? "active" : null)"
+           asp-action="Semanal"
+           asp-route-mes="@mes"
+           asp-route-año="@ano">Semanal</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link @(Model == SubMenuTransacciones.Mensual ? "active" : null)"
+           asp-action="Mensual"
+           asp-route-mes="@mes"
+           asp-route-año="@ano">Mensual</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link @(Model == SubMenuTransacciones.Excel ? "active" : null)"
+           asp-action="ExcelReporte"
+           asp-route-mes="@mes"
+           asp-route-año="@ano">Excel</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link @(Model == SubMenuTransacciones.Calendario ? "active" : null)"
+           asp-action="Calendario"
+           asp-route-mes="@mes"
+           asp-route-año="@ano">Calendario</a>
+    </li>
+</ul>

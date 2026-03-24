@@ -1,0 +1,48 @@
+﻿@model PaginacionRespuesta<ManejoPresupuesto.Models.Categoria>
+
+@{
+    var plantillaLink = string.Concat(Model.UrlBase, "?pagina={0}&recordsPorPagina={1}");
+    var activarAnterior = Model.Pagina > 1;
+    var activarSiguiente = Model.Pagina < Model.TotalPaginas;
+}
+
+<nav>
+    <ul class="pagination">
+        <li class="page-item @(activarAnterior ? "" : "disabled")">
+           @if (activarAnterior)
+            {
+                <a class="page-link" href="@string.Format(plantillaLink, Model.Pagina - 1, Model.RecordsPorPagina)">
+                    Anterior
+                </a>
+            }
+            else
+            {
+                <span class="page-link">
+                    Anterior
+                </span>
+            }
+        </li>
+        @for (int i = 1; i <= Model.TotalPaginas; i++)
+        {
+            <li class="page-item">
+                <a class="page-link" href="@string.Format(plantillaLink, i, Model.RecordsPorPagina)">
+                    @i
+                </a>
+            </li>
+        }
+        <li class="page-item @(activarSiguiente ? "" : "disabled")">
+            @if (activarSiguiente)
+            {
+                <a class="page-link" href="@string.Format(plantillaLink, Model.Pagina + 1, Model.RecordsPorPagina)">
+                    Siguiente
+                </a>
+            }
+            else
+            {
+                <span class="page-link">
+                    Siguiente
+                </span>
+            }
+        </li>
+    </ul>
+</nav>

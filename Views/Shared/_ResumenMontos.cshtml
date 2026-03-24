@@ -1,0 +1,26 @@
+﻿@model ResumenMontosViewModel
+
+<div class="card p-3" style="font-size:20px">
+    <div class="row">
+        <div class="col">
+            <strong>Ingresos:</strong>
+            <span style="color:green; font-weight:bold">
+                @Model.Ingresos
+            </span>
+        </div>
+
+        <div class="col">
+            <strong>Gastos:</strong>
+            <span style="color:red; font-weight:bold">
+                @Model.Gastos
+            </span>
+        </div>
+
+        <div class="col">
+            <strong>Total:</strong>
+            <span style="font-weight:bold; color:@(Model.Total < 0 ? "red" : "green")">
+                @Model.Total
+            </span>
+        </div>
+    </div>
+</div>

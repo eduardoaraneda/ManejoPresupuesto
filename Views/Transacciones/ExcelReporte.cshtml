@@ -1,0 +1,106 @@
+﻿@{
+    ViewData["Title"] = "Reporte Excel";
+
+    var hoy = DateTime.Today;
+    var haceUnMes = hoy.AddMonths(-1);
+
+    var mesActual = hoy.Month;
+    var anioActual = hoy.Year;
+
+    var mesAnterior = haceUnMes.Month;
+    var anioAnterior = hoy.Year - 1;   // ✔ Corrección
+}
+
+<partial name="Submenu" model="SubMenuTransacciones.Excel" />
+
+<h1 class="mb-4">Exportar Transacciones a Excel</h1>
+
+<div class="row g-3">
+
+    <!-- Exportar mes actual -->
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-calendar-check me-2"></i>Mes Actual
+                </h5>
+                <p class="card-text text-muted">@hoy.ToString("MMMM yyyy")</p>
+                <a class="btn btn-success w-100"
+                   asp-action="ExportarExcel"
+                   asp-route-mes="@mesActual"
+                   asp-route-año="@anioActual">
+                    <i class="bi bi-file-earmark-excel me-2"></i>Exportar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exportar mes anterior -->
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-arrow-left-circle me-2"></i>Mes Anterior
+                </h5>
+                <p class="card-text text-muted">@haceUnMes.ToString("MMMM yyyy")</p>
+                <a class="btn btn-success w-100"
+                   asp-action="ExportarExcel"
+                   asp-route-mes="@mesAnterior"
+                   asp-route-año="@anioActual">
+                    <i class="bi bi-file-earmark-excel me-2"></i>Exportar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exportar año actual -->
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-calendar-event me-2"></i>Año Actual
+                </h5>
+                <p class="card-text text-muted">@anioActual</p>
+                <a class="btn btn-primary w-100"
+                   asp-action="ExportarExcelPorAño"
+                   asp-route-año="@anioActual">
+                    <i class="bi bi-file-earmark-excel me-2"></i>Exportar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exportar año anterior -->
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-calendar-minus me-2"></i>Año Anterior
+                </h5>
+                <p class="card-text text-muted">@anioAnterior</p>
+                <a class="btn btn-primary w-100"
+                   asp-action="ExportarExcelPorAño"
+                   asp-route-año="@anioAnterior">
+                    <i class="bi bi-file-earmark-excel me-2"></i>Exportar
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exportar todo -->
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-archive me-2"></i>Todo el historial
+                </h5>
+                <p class="card-text text-muted">Hasta @hoy.ToString("MMMM yyyy")</p>
+                <a class="btn btn-dark w-100"
+                   asp-action="ExportarExcelTodo">
+                    <i class="bi bi-file-arrow-down me-2"></i>Exportar Todo
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,83 @@
+﻿@model PaginacionRespuesta<Categoria>
+
+@{
+    ViewData["Title"] = "Categorías";
+}
+
+<h1>Categorías</h1>
+<h5>La categoría nos permite indicar en qué gastaremos nuestro dinero y de dónde vienen nuestros ingresos.</h5>
+
+<h3>
+    Cantidad de categorías mostradas: @Model.RecordsPorPagina -
+    Total de páginas: @Model.TotalPaginas
+</h3>
+
+<a asp-action="Crear" class="btn btn-primary mb-3">Crear Categoría</a>
+
+<div class="row mb-3">
+    <label class="form-label">Cantidad registros a mostrar</label>
+    <div class="col-auto">
+        <select asp-for="@Model.RecordsPorPagina"
+                id="cantidadRecordPorPagina"
+                class="form-select w-auto">
+            <option value="2" selected="@(Model.RecordsPorPagina == 2)">2</option>
+            <option value="5" selected="@(Model.RecordsPorPagina == 5)">5</option>
+            <option value="10" selected="@(Model.RecordsPorPagina == 10)">10</option>
+            <option value="20" selected="@(Model.RecordsPorPagina == 20)">20</option>
+            <option value="50" selected="@(Model.RecordsPorPagina == 50)">50</option>
+            <option value="100" selected="@(Model.RecordsPorPagina == 100)">100</option>
+        </select>
+    </div>
+</div>
+
+<partial name="_Paginacion" model="Model" />
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Acciones</th>
+            <th>Nombre</th>
+            <th>Tipo Operación</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var categoria in Model.Elementos)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Editar" asp-route-id="@categoria.Id" class="btn btn-sm btn-warning">Editar</a>
+                    <a asp-action="Borrar" asp-route-id="@categoria.Id" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+                <td>@categoria.Nombre</td>
+                <td>@categoria.TipoOperacionId</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // SweetAlert solo si viene un mensaje
+        @if (TempData["MensajeExito"] != null)
+        {
+                <text>
+                    Swal.fire({
+                        title: '¡Éxito!',
+                        text: '@TempData["MensajeExito"]',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar',
+                        timer: 10000,
+                        timerProgressBar: true
+                    });
+                </text>
+        }
+
+        // Esto debe ejecutarse SIEMPRE
+        $("#cantidadRecordPorPagina").on("change", function () {
+            var recordsPorPagina = $(this).val();
+            location.href = `/Categorias/Index?pagina=1&recordsPorPagina=${recordsPorPagina}`;
+        });
+    </script>
+}
